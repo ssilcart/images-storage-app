@@ -1,17 +1,22 @@
 import axios from 'axios';
 
-export default class Maage {
+class ImagesApi {
   constructor() {
     this.baseUrl = 'http://interview.agileengine.com';
+    this.apiKey = '23567b218376f79d9415';
   }
 
-  getAuthToken(apiKey) {
-    return axios.post(this.baseUrl, apiKey);
+  getAuthToken() {
+    return axios.post(`${this.baseUrl}/auth`, {
+      apiKey: this.apiKey,
+    });
   }
 
   getImages(token) {
     return axios.get(`${this.baseUrl}/images`, {
-      headers: `Bearer ${token}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 
@@ -21,3 +26,5 @@ export default class Maage {
     });
   }
 }
+
+export default new ImagesApi();
