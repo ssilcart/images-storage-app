@@ -1,6 +1,8 @@
 <template>
-  <div class="hello">
-    <ul class="imagesList">
+  <div class="container">
+    <button v-on:click="prevPage()">Previous page</button>
+    <button v-on:click="nextPage()">next page</button>
+    <ul class="images-list col-12">
       <li v-for="image in images" :key="image.id">
         <img :src="image.cropped_picture" alt="">
       </li>
@@ -16,17 +18,26 @@ export default {
   data() {
     return {
       images: [],
+      page: 1,
     };
   },
   props: {
     msg: String,
   },
   methods: {
+    nextPage() {
+      this.page += 1;
+      this.getImages();
+      console.log(this.page);
+    },
+    prevPage() {
+      this.page = this.page > 1 ? this.page - 1 : 1;
+      this.getImages();
+    },
     getImages() {
       imagesApi.getAuthToken().then((tokenResponse) => {
-        imagesApi.getImages(tokenResponse.data.token).then((imagesResponse) => {
+        imagesApi.getImages(tokenResponse.data.token, this.page).then((imagesResponse) => {
           this.images = imagesResponse.data.pictures;
-          console.log(this.images);
         });
       });
     },

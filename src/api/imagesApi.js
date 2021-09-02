@@ -12,8 +12,8 @@ class ImagesApi {
     });
   }
 
-  getImages(token) {
-    return axios.get(`${this.baseUrl}/images`, {
+  getImages(token, page = 1) {
+    return axios.get(`${this.baseUrl}/images?page=${page}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -22,7 +22,9 @@ class ImagesApi {
 
   getImageById(token, id) {
     return axios.get(`${this.baseUrl}/images/${id}`, {
-      headers: `Bearer ${token}`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 }
