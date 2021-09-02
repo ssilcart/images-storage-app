@@ -5,7 +5,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import ImagesGrid from '@/components/ImagesGrid.vue';
 
 export default {

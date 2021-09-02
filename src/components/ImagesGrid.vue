@@ -1,23 +1,32 @@
 <template>
   <div class="container">
     <button v-on:click="prevPage()">Previous page</button>
+    &nbsp;
     <button v-on:click="nextPage()">next page</button>
     <ul class="images-list col-12">
       <li v-for="image in images" :key="image.id">
-        <img :src="image.cropped_picture" alt="">
+        <img :src="image.cropped_picture" v-on:click="openImageModal(image.id)" alt="">
       </li>
     </ul>
+    <div v-if="selectedImage">
+      <ImagePopupModal :imageId="selectedImage" @close="closeImageModal()"/>
+    </div>
   </div>
 </template>
 
 <script>
-import imagesApi from '../api/imagesApi';
+import imagesApi from '@/api/imagesApi';
+import ImagePopupModal from '@/components/ImagePopupModal.vue';
 
 export default {
   name: 'ImagesGrid',
+  components: {
+    ImagePopupModal,
+  },
   data() {
     return {
       images: [],
+      selectedImage: null,
       page: 1,
     };
   },
@@ -25,6 +34,12 @@ export default {
     msg: String,
   },
   methods: {
+    closeImageModal() {
+      this.selectedImage = null;
+    },
+    openImageModal(imageId) {
+      this.selectedImage = imageId;
+    },
     nextPage() {
       this.page += 1;
       this.getImages();
